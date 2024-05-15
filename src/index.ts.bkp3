@@ -71,22 +71,18 @@ class AIText extends Paragraph {
       aiSuggestionsElement.remove()
     }
 
-    const textContent = e.target.innerHTML
-
     if (
       e.inputType === 'deleteContentBackward' ||
       e.inputType === 'deleteContentForward' ||
       e.inputType === 'insertParagraph' ||
       e.inputType === 'insertFromPaste' ||
       e.inputType === 'insertFromDrop' ||
-      !textContent
+      !e.target.innerHTML
     ) {
       return
     }
 
-    if (textContent.endsWith('&nbsp;') && !aiSuggestionsElement) {
-      this.getAICompletion(textContent)
-    }
+    this.getAICompletion(e.target.innerHTML)
 
     this.typingTimer = setTimeout(() => {
       this.acceptAISuggestion()

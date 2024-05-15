@@ -1,14 +1,14 @@
 (function() {
   try {
     if (typeof document < "u") {
-      var a = document.createElement("style");
-      a.appendChild(document.createTextNode(".ce-paragraph{line-height:1.6em;outline:none}.ce-paragraph[data-placeholder]:empty:before{content:attr(data-placeholder);color:#707684;font-weight:400;opacity:0}.codex-editor--empty .ce-block:first-child .ce-paragraph[data-placeholder]:empty:before{opacity:1}.codex-editor--toolbox-opened .ce-block:first-child .ce-paragraph[data-placeholder]:empty:before,.codex-editor--empty .ce-block:first-child .ce-paragraph[data-placeholder]:empty:focus:before{opacity:0}.ce-paragraph p:first-of-type{margin-top:0}.ce-paragraph p:last-of-type{margin-bottom:0}")), document.head.appendChild(a);
+      var s = document.createElement("style");
+      s.appendChild(document.createTextNode(".ce-paragraph{line-height:1.6em;outline:none}.ce-paragraph[data-placeholder]:empty:before{content:attr(data-placeholder);color:#707684;font-weight:400;opacity:0}.codex-editor--empty .ce-block:first-child .ce-paragraph[data-placeholder]:empty:before{opacity:1}.codex-editor--toolbox-opened .ce-block:first-child .ce-paragraph[data-placeholder]:empty:before,.codex-editor--empty .ce-block:first-child .ce-paragraph[data-placeholder]:empty:focus:before{opacity:0}.ce-paragraph p:first-of-type{margin-top:0}.ce-paragraph p:last-of-type{margin-bottom:0}")), document.head.appendChild(s);
     }
   } catch (e) {
     console.error("vite-plugin-css-injected-by-js", e);
   }
 })();
-const c = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M8 9V7.2C8 7.08954 8.08954 7 8.2 7L12 7M16 9V7.2C16 7.08954 15.9105 7 15.8 7L12 7M12 7L12 17M12 17H10M12 17H14"/></svg>';
+const d = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M8 9V7.2C8 7.08954 8.08954 7 8.2 7L12 7M16 9V7.2C16 7.08954 15.9105 7 15.8 7L12 7M12 7L12 17M12 17H10M12 17H14"/></svg>';
 /**
  * Base Paragraph Block for the Editor.js.
  * Represents a regular text block
@@ -198,31 +198,33 @@ class l {
    */
   static get toolbox() {
     return {
-      icon: c,
+      icon: d,
       title: "Text"
     };
   }
 }
-function d(a, e = 500) {
+function h(s, e = 100) {
   let t;
   return (...n) => {
     clearTimeout(t), t = setTimeout(() => {
-      a.apply(null, n);
+      s.apply(null, n);
     }, e);
   };
 }
-class h extends l {
+class p extends l {
   constructor({ api: e, block: t, config: n, data: i }) {
     if (super({
       api: e,
       block: t,
       config: n,
       data: i
-    }), this.readOnly = !1, this.onInput = d((r) => {
-      var s;
+    }), this.readOnly = !1, this.onInput = h((r) => {
+      var c;
       clearTimeout(this.typingTimer);
-      const o = (s = this._element) == null ? void 0 : s.querySelector("#ai-suggestions");
-      o && o.remove(), !(r.inputType === "deleteContentBackward" || r.inputType === "deleteContentForward" || r.inputType === "insertParagraph" || r.inputType === "insertFromPaste" || r.inputType === "insertFromDrop" || !r.target.innerHTML) && (this.getAICompletion(r.target.innerHTML), this.typingTimer = setTimeout(() => {
+      const a = (c = this._element) == null ? void 0 : c.querySelector("#ai-suggestions");
+      a && a.remove();
+      const o = r.target.innerHTML;
+      r.inputType === "deleteContentBackward" || r.inputType === "deleteContentForward" || r.inputType === "insertParagraph" || r.inputType === "insertFromPaste" || r.inputType === "insertFromDrop" || !o || (o.endsWith("&nbsp;") && !a && this.getAICompletion(o), this.typingTimer = setTimeout(() => {
         this.acceptAISuggestion();
       }, 3500));
     }), !n.callback)
@@ -240,9 +242,9 @@ class h extends l {
   getAICompletion(e) {
     var t;
     e && ((t = this.callback) == null || t.call(this, e).then((n) => {
-      var r, o, s;
+      var r, a, o;
       const i = document.createElement("span");
-      i.innerHTML = "", i.id = "ai-suggestions", i.style.color = "lightgray", i.innerHTML = n, (r = this._element) == null || r.appendChild(i), (s = (o = this._element) == null ? void 0 : o.querySelector("#ai-suggestions-loader")) == null || s.remove();
+      i.innerHTML = "", i.id = "ai-suggestions", i.style.color = "lightgray", i.innerHTML = n, (r = this._element) == null || r.appendChild(i), (o = (a = this._element) == null ? void 0 : a.querySelector("#ai-suggestions-loader")) == null || o.remove();
     }).catch((n) => {
       throw new Error(n);
     }));
@@ -286,5 +288,5 @@ class h extends l {
   }
 }
 export {
-  h as default
+  p as default
 };
