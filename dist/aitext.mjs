@@ -1,14 +1,14 @@
 (function() {
   try {
     if (typeof document < "u") {
-      var s = document.createElement("style");
-      s.appendChild(document.createTextNode(".ce-paragraph{line-height:1.6em;outline:none}.ce-paragraph[data-placeholder]:empty:before{content:attr(data-placeholder);color:#707684;font-weight:400;opacity:0}.codex-editor--empty .ce-block:first-child .ce-paragraph[data-placeholder]:empty:before{opacity:1}.codex-editor--toolbox-opened .ce-block:first-child .ce-paragraph[data-placeholder]:empty:before,.codex-editor--empty .ce-block:first-child .ce-paragraph[data-placeholder]:empty:focus:before{opacity:0}.ce-paragraph p:first-of-type{margin-top:0}.ce-paragraph p:last-of-type{margin-bottom:0}")), document.head.appendChild(s);
+      var a = document.createElement("style");
+      a.appendChild(document.createTextNode(".ce-paragraph{line-height:1.6em;outline:none}.ce-paragraph[data-placeholder]:empty:before{content:attr(data-placeholder);color:#707684;font-weight:400;opacity:0}.codex-editor--empty .ce-block:first-child .ce-paragraph[data-placeholder]:empty:before{opacity:1}.codex-editor--toolbox-opened .ce-block:first-child .ce-paragraph[data-placeholder]:empty:before,.codex-editor--empty .ce-block:first-child .ce-paragraph[data-placeholder]:empty:focus:before{opacity:0}.ce-paragraph p:first-of-type{margin-top:0}.ce-paragraph p:last-of-type{margin-bottom:0}")), document.head.appendChild(a);
     }
   } catch (e) {
     console.error("vite-plugin-css-injected-by-js", e);
   }
 })();
-const h = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M8 9V7.2C8 7.08954 8.08954 7 8.2 7L12 7M16 9V7.2C16 7.08954 15.9105 7 15.8 7L12 7M12 7L12 17M12 17H10M12 17H14"/></svg>';
+const c = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M8 9V7.2C8 7.08954 8.08954 7 8.2 7L12 7M16 9V7.2C16 7.08954 15.9105 7 15.8 7L12 7M12 7L12 17M12 17H10M12 17H14"/></svg>';
 /**
  * Base Paragraph Block for the Editor.js.
  * Represents a regular text block
@@ -17,7 +17,7 @@ const h = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="
  * @copyright CodeX 2018
  * @license The MIT License (MIT)
  */
-class c {
+class l {
   /**
    * Default placeholder for Paragraph Tool
    *
@@ -36,11 +36,11 @@ class c {
    * @param {object} params.api - editor.js api
    * @param {boolean} readOnly - read only mode flag
    */
-  constructor({ data: e, config: t, api: i, readOnly: a }) {
-    this.api = i, this.readOnly = a, this._CSS = {
+  constructor({ data: e, config: t, api: n, readOnly: i }) {
+    this.api = n, this.readOnly = i, this._CSS = {
       block: this.api.styles.block,
       wrapper: "ce-paragraph"
-    }, this.readOnly || (this.onKeyUp = this.onKeyUp.bind(this)), this._placeholder = t.placeholder ? t.placeholder : c.DEFAULT_PLACEHOLDER, this._data = {}, this._element = null, this._preserveBlank = t.preserveBlank !== void 0 ? t.preserveBlank : !1, this.data = e;
+    }, this.readOnly || (this.onKeyUp = this.onKeyUp.bind(this)), this._placeholder = t.placeholder ? t.placeholder : l.DEFAULT_PLACEHOLDER, this._data = {}, this._element = null, this._preserveBlank = t.preserveBlank !== void 0 ? t.preserveBlank : !1, this.data = e;
   }
   /**
    * Check if text content is empty and set empty string to inner html.
@@ -198,32 +198,36 @@ class c {
    */
   static get toolbox() {
     return {
-      icon: h,
+      icon: c,
       title: "Text"
     };
   }
 }
-function p(s, e = 2e3) {
+function d(a, e = 500) {
   let t;
-  return (...i) => {
+  return (...n) => {
     clearTimeout(t), t = setTimeout(() => {
-      s.apply(null, i);
+      a.apply(null, n);
     }, e);
   };
 }
-class u extends c {
-  constructor({ api: e, block: t, config: i, data: a }) {
+class h extends l {
+  constructor({ api: e, block: t, config: n, data: i }) {
     if (super({
       api: e,
       block: t,
-      config: i,
-      data: a
-    }), this.readOnly = !1, this.onInput = p((n) => {
-      var r;
-      console.log(n.target.innerHTML), !((r = this._element) != null && r.querySelector("#ai-suggestions") || n.inputType === "deleteContentBackward" || n.inputType === "deleteContentForward" || n.inputType === "insertParagraph" || n.inputType === "insertFromPaste" || n.inputType === "insertFromDrop" || !n.target.innerHTML) && this.getAICompletion(n.target.innerHTML);
-    }), !i.callback)
-      throw new Error("Callback function is required!");
-    this.callback = i.callback;
+      config: n,
+      data: i
+    }), this.readOnly = !1, this.onInput = d((r) => {
+      var s;
+      clearTimeout(this.typingTimer);
+      const o = (s = this._element) == null ? void 0 : s.querySelector("#ai-suggestions");
+      o && o.remove(), !(r.inputType === "deleteContentBackward" || r.inputType === "deleteContentForward" || r.inputType === "insertParagraph" || r.inputType === "insertFromPaste" || r.inputType === "insertFromDrop" || !r.target.innerHTML) && (this.getAICompletion(r.target.innerHTML), this.typingTimer = setTimeout(() => {
+        this.acceptAISuggestion();
+      }, 3500));
+    }), !n.callback)
+      throw new Error("Callback function é obrigatória!");
+    this.callback = n.callback;
   }
   static get toolbox() {
     return {
@@ -234,48 +238,38 @@ class u extends c {
     };
   }
   getAICompletion(e) {
-    var i, a;
-    if (!e)
-      return;
-    const t = document.createElement("div");
-    t.innerHTML = `<svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12 2.99988V5.99988M12 20.9999V17.9999M4.20577 16.4999L6.80385 14.9999M21 11.9999H18M16.5 19.7941L15 17.196M3 11.9999H6M7.5 4.20565L9 6.80373M7.5 19.7941L9 17.196M19.7942 16.4999L17.1962 14.9999M4.20577 7.49988L6.80385 8.99988" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>`, t.id = "ai-suggestions-loader", t.style.display = "inline-flex", t.style.alignItems = "center", t.style.width = "24px", t.style.height = "24px", t.style.paddingLeft = "4px", t.style.color = "lightgray", t.style.position = "absolute", t.animate(
-      [
-        {
-          transform: "rotate(0deg)"
-        },
-        {
-          transform: "rotate(360deg)"
-        }
-      ],
-      {
-        duration: 2e3,
-        iterations: 1 / 0
-      }
-    ), (i = this._element) == null || i.appendChild(t), (a = this.callback) == null || a.call(this, e).then((n) => {
-      var o, l, d;
-      console.log(n);
-      const r = document.createElement("span");
-      r.innerHTML = "", r.id = "ai-suggestions", r.style.color = "lightgray", r.innerHTML = n, (o = this._element) == null || o.appendChild(r), (d = (l = this._element) == null ? void 0 : l.querySelector("#ai-suggestions-loader")) == null || d.remove();
+    var t;
+    e && ((t = this.callback) == null || t.call(this, e).then((n) => {
+      var r, o, s;
+      const i = document.createElement("span");
+      i.innerHTML = "", i.id = "ai-suggestions", i.style.color = "lightgray", i.innerHTML = n, (r = this._element) == null || r.appendChild(i), (s = (o = this._element) == null ? void 0 : o.querySelector("#ai-suggestions-loader")) == null || s.remove();
     }).catch((n) => {
       throw new Error(n);
-    });
+    }));
+  }
+  acceptAISuggestion() {
+    var i, r;
+    const e = (i = this._element) == null ? void 0 : i.querySelector("#ai-suggestions");
+    if (!e)
+      return;
+    const t = e.textContent;
+    if (!t)
+      return;
+    const n = document.createTextNode(t);
+    (r = this._element) == null || r.appendChild(n), e.remove(), this.moveCursorToEnd();
+  }
+  moveCursorToEnd() {
+    const e = document.createRange(), t = window.getSelection();
+    !t || !this._element || (e.selectNodeContents(this._element), e.collapse(!1), t.removeAllRanges(), t.addRange(e), this._element.focus());
   }
   onKeyUp(e) {
-    var i, a, n, r;
-    if (e.code === "Escape" || e.code === "Backspace") {
-      (a = (i = this._element) == null ? void 0 : i.querySelector("#ai-suggestions")) == null || a.remove();
+    var n, i;
+    if (clearTimeout(this.typingTimer), e.code === "Escape" || e.code === "Backspace") {
+      (i = (n = this._element) == null ? void 0 : n.querySelector("#ai-suggestions")) == null || i.remove();
       return;
     }
-    if (e.code === "AltLeft" || e.code === "AltRight") {
-      const o = (n = this._element) == null ? void 0 : n.querySelector("#ai-suggestions"), l = o == null ? void 0 : o.textContent;
-      if (!l)
-        return;
-      const d = document.createTextNode(
-        l
-      );
-      (r = this._element) == null || r.appendChild(d), o.remove();
+    if (e.code === "ArrowRight" || e.code === "Enter" || e.code === "AltLeft") {
+      this.acceptAISuggestion();
       return;
     }
     if (e.code !== "Backspace" && e.code !== "Delete" || !this._element)
@@ -292,5 +286,5 @@ class u extends c {
   }
 }
 export {
-  u as default
+  h as default
 };

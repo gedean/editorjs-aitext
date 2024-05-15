@@ -1,6 +1,6 @@
 export function debounce<F extends (...args: any[]) => void>(
   func: F,
-  timeout = 2000
+  timeout = 500
 ): (...args: Parameters<F>) => void {
   let timer: ReturnType<typeof setTimeout> | undefined
   return (...args: Parameters<F>): void => {
