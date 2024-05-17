@@ -90,7 +90,7 @@ class AIText extends Paragraph {
 
     this.typingTimer = setTimeout(() => {
       this.acceptAISuggestion()
-    }, 2500)
+    }, 3500)
   })
 
   acceptAISuggestion() {
@@ -101,19 +101,8 @@ class AIText extends Paragraph {
     if (!aiSuggestionTextContent) return
 
     const aiSuggestionTextNode = document.createTextNode(aiSuggestionTextContent)
-
     this._element?.appendChild(aiSuggestionTextNode)
     aiSuggestionElement.remove()
-
-    let fullTextContent = this._element?.textContent || ''
-
-    fullTextContent = fullTextContent
-      .replace(/\s{2,}/g, ' ')
-      .replace(/\s([.,:;!?'"(){}[\]<>\-\\/~`@#$%^&*_=+|])/g, '$1')
-
-    if (this._element) {
-      this._element.textContent = fullTextContent
-    }
 
     this.moveCursorToEnd()
   }
@@ -135,6 +124,11 @@ class AIText extends Paragraph {
 
     if (e.code === 'Escape' || e.code === 'Backspace') {
       this._element?.querySelector('#ai-suggestions')?.remove()
+      return
+    }
+
+    if (e.code === 'ArrowRight' || e.code === 'Enter' || e.code === 'AltLeft') {
+      this.acceptAISuggestion()
       return
     }
 

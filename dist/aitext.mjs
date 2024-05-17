@@ -203,7 +203,7 @@ class l {
     };
   }
 }
-function h(s, e = 100) {
+function h(s, e = 500) {
   let t;
   return (...n) => {
     clearTimeout(t), t = setTimeout(() => {
@@ -224,9 +224,9 @@ class p extends l {
       const a = (c = this._element) == null ? void 0 : c.querySelector("#ai-suggestions");
       a && a.remove();
       const o = r.target.innerHTML;
-      r.inputType === "deleteContentBackward" || r.inputType === "deleteContentForward" || r.inputType === "insertParagraph" || r.inputType === "insertFromPaste" || r.inputType === "insertFromDrop" || !o || (o.endsWith("&nbsp;") && !a && this.getAICompletion(o), this.typingTimer = setTimeout(() => {
+      r.inputType === "deleteContentBackward" || r.inputType === "deleteContentForward" || r.inputType === "insertParagraph" || r.inputType === "insertFromPaste" || r.inputType === "insertFromDrop" || !o || (o.endsWith("&nbsp;&nbsp;") && !a && this.getAICompletion(o), this.typingTimer = setTimeout(() => {
         this.acceptAISuggestion();
-      }, 3500));
+      }, 2500));
     }), !n.callback)
       throw new Error("Callback function é obrigatória!");
     this.callback = n.callback;
@@ -250,15 +250,17 @@ class p extends l {
     }));
   }
   acceptAISuggestion() {
-    var i, r;
-    const e = (i = this._element) == null ? void 0 : i.querySelector("#ai-suggestions");
+    var r, a, o;
+    const e = (r = this._element) == null ? void 0 : r.querySelector("#ai-suggestions");
     if (!e)
       return;
     const t = e.textContent;
     if (!t)
       return;
     const n = document.createTextNode(t);
-    (r = this._element) == null || r.appendChild(n), e.remove(), this.moveCursorToEnd();
+    (a = this._element) == null || a.appendChild(n), e.remove();
+    let i = ((o = this._element) == null ? void 0 : o.textContent) || "";
+    i = i.replace(/\s{2,}/g, " ").replace(/\s([.,:;!?'"(){}[\]<>\-\\/~`@#$%^&*_=+|])/g, "$1"), this._element && (this._element.textContent = i), this.moveCursorToEnd();
   }
   moveCursorToEnd() {
     const e = document.createRange(), t = window.getSelection();
@@ -268,10 +270,6 @@ class p extends l {
     var n, i;
     if (clearTimeout(this.typingTimer), e.code === "Escape" || e.code === "Backspace") {
       (i = (n = this._element) == null ? void 0 : n.querySelector("#ai-suggestions")) == null || i.remove();
-      return;
-    }
-    if (e.code === "ArrowRight" || e.code === "Enter" || e.code === "AltLeft") {
-      this.acceptAISuggestion();
       return;
     }
     if (e.code !== "Backspace" && e.code !== "Delete" || !this._element)
